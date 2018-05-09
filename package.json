@@ -1,0 +1,23 @@
+{
+  "name": "browser_ml",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@tensorflow/tfjs": "^0.10.3",
+    "brain.js": "^1.2.0",
+    "react": "^16.3.2",
+    "react-color": "^2.14.1",
+    "react-dom": "^16.3.2",
+    "react-progressbar": "^15.4.1",
+    "react-progressbar.js": "^0.2.0",
+    "react-scripts": "1.1.4",
+    "react-spinkit": "^3.0.0",
+    "styled-components": "^3.2.6"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
