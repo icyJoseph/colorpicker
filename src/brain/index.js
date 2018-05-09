@@ -19,3 +19,7 @@ export const normal = ({ r, g, b, a }) => {
 export const amplify = ({ r, g, b, a }) => {
   return { r: 255 * r, g: g * 255, b: b * 255, a };
 };
+
+export const rgbaToString = ({ r, g, b, a }) => {
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+};

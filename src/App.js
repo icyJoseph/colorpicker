@@ -3,8 +3,8 @@ import Spinner from "react-spinkit";
 import CardColorPicker from "./components/CardColorPicker";
 import CenterTile from "./components/CenterTile";
 import MainTitle from "./components/MainTitle";
-import { Net, normalizer, normal, amplify } from "./brain";
-import { compose, rgbaToString } from "./functional";
+import { Net, normalizer, normal, amplify, rgbaToString } from "./brain";
+import { compose } from "./functional";
 import { Button, Container, Column, Row, Text } from "./styled";
 
 class App extends Component {
