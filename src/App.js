@@ -21,7 +21,11 @@ class App extends Component {
   };
 
   handleBackgroundChangeComplete = color => {
+    const { trained } = this.state;
     this.setState({ background: color.rgb, backgroundString: color.hex });
+    if (trained) {
+      this.test(color.rgb);
+    }
   };
 
   handleTextChangeComplete = color => {
@@ -81,9 +85,9 @@ class App extends Component {
     );
   };
 
-  test = () => {
-    const { background, brain } = this.state;
-    const result = compose(amplify, brain, normal)(background);
+  test = rgb => {
+    const { brain } = this.state;
+    const result = compose(amplify, brain, normal)(rgb);
     this.setState({ textColor: result });
   };
 
@@ -103,12 +107,22 @@ class App extends Component {
     return (
       <Container background={backgroundString}>
         <MainTitle textColor={textColorString} title="Color Picker" />
+        <Text
+          color={textColorString}
+          style={{ marginBottom: "35px", textAlign: "center" }}
+        >
+          <span>
+            Make 5 pairs <br />
+            <code>{`{background, textColor}`}</code>
+          </span>
+        </Text>
         <Row direction="column">
           <CardColorPicker
             title="Background Color"
             handler={this.handleBackgroundChangeComplete}
             textColor={textColorString}
             picker={backgroundString}
+            testMode={trained}
           />
           {trained ? (
             <Column style={{ height: "120px" }} />
@@ -121,7 +135,7 @@ class App extends Component {
             />
           )}
           <CenterTile
-            title={trained ? "Change Background!" : "Choose colors"}
+            title={trained ? "Change the background!" : "Choose colors"}
             textColor={textColorString}
             count={data.length}
             base={base}
@@ -131,15 +145,12 @@ class App extends Component {
         </Row>
         <Row direction="column">
           <Column>
-            {data.length < 5 ? (
+            {trained ? null : data.length < 5 ? (
               <Button onClick={this.addToData}>Add</Button>
             ) : (
-              !training && (
-                <Button onClick={trained ? this.test : this.train}>
-                  {trained ? "Test" : "Train"}
-                </Button>
-              )
+              !training && <Button onClick={this.train}>Train</Button>
             )}
+
             <Button onClick={this.resetData}>Reset</Button>
           </Column>
         </Row>
@@ -156,7 +167,7 @@ class App extends Component {
           <Column>
             <Text color={textColorString}>Progress: {iterations} / 2000</Text>
           </Column>
-          <Column style={{ marginTop: "20px", marginBottom: "100px" }}>
+          <Column style={{ marginTop: "20px", marginBottom: "120px" }}>
             <Text color={textColorString}>Error: {error.toFixed(2)} %</Text>
           </Column>
         </Row>
