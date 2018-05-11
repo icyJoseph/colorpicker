@@ -2,7 +2,7 @@
 
 ## Color Picker
 
-Using [Brain.js](https://github.com/BrainJS/brain.js/tree/develop/src) the user can select 5 pairs of colors, `{background-color, font-color}`, and train a Neural Network.
+This project uses [Brain.js](https://github.com/BrainJS/brain.js/tree/develop/src). The user can select 5 pairs of colors, `{background-color, font-color}`, and train a Neural Network.
 
 Once the training is done the user can change the background color and `test` a suggested font-color.
 
