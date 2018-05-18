@@ -6,4 +6,4 @@ This project uses [Brain.js](https://github.com/BrainJS/brain.js/tree/develop/sr
 
 Once the training is done the user can change the background color and `test` a suggested font-color.
 
-You may find a [demo](https://nauseating-party.surge.sh/)
+Demo available at: [Color Picker](https://nauseating-party.surge.sh/)
