@@ -1,14 +1,15 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  background: ${props => props.background};
 `;
 export const Row = styled.div`
-  display: flex;
   flex: 1;
-  flex-direction: ${props => props.direction};
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Column = styled.div`
@@ -19,29 +20,21 @@ export const Column = styled.div`
 `;
 
 export const Title = styled.span`
-  display: flex;
   flex: 1;
-  min-height: 75px;
-  height: 75px;
-  height: auto !important;
-  font-size: ${props => props.size}pt;
+  display: flex;
   justify-content: center;
   align-items: center;
-  color: ${props => props.color};
 `;
 
 export const Text = styled.span`
-  display: flex;
   flex: 1;
+  display: flex;
   justify-content: center;
   align-items: center;
-  color: ${props => props.color};
   font-size: 20pt;
 `;
 
 export const Button = styled.button`
-  background: ${props => (props.primary ? "palevioletred" : "white")};
-  color: ${props => (props.primary ? "white" : "palevioletred")};
   font-size: 1em;
   width: 75px;
   margin: 1em;

@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import Spinner from "react-spinkit";
 import CardColorPicker from "./components/CardColorPicker";
-import CenterTile from "./components/CenterTile";
 import MainTitle from "./components/MainTitle";
-import { Net, normalizer, normal, amplify, rgbaToString } from "./brain";
-import { compose } from "./functional";
+import { Net, normalizer, rgbaToString } from "./brain";
 import { Button, Container, Column, Row, Text } from "./styled";
 
 class App extends Component {
   state = {
-    background: { r: 255, g: 255, b: 255, a: 1 },
-    textColor: { r: 0, g: 0, b: 0, a: 1 },
     data: [],
+    temp: 0,
+    color: { r: 0, g: 0, b: 0, a: 0 },
     base: 5,
     brain: null,
     training: false,
@@ -21,26 +19,21 @@ class App extends Component {
   };
 
   handleBackgroundChangeComplete = color => {
-    const { trained } = this.state;
-    this.setState({ background: color.rgb, backgroundString: color.hex });
-    if (trained) {
-      this.test(color.rgb);
-    }
-  };
-
-  handleTextChangeComplete = color => {
-    this.setState({ textColor: color.rgb, textColorString: color.hex });
+    console.log("handler", color);
+    return this.setState({ color: color.rgb });
   };
 
   addToData = () => {
     this.setState(prevState => {
-      const { background, textColor, data, base } = prevState;
+      const { temp, color, data, base } = prevState;
+      console.log(color);
       return {
         data: data.concat({
-          input: background,
-          output: textColor
+          input: { temp },
+          output: color
         }),
-        base: data.length >= base ? data.length + 1 : base
+        base: data.length >= base ? data.length + 1 : base,
+        temp: temp + 0.2
       };
     });
   };
@@ -63,7 +56,9 @@ class App extends Component {
     this.setState({ training: true, trained: false });
     const { brain, asyncTrain } = Net();
     const { data } = this.state;
+    console.log("data", data);
     const normalized = data.map(normalizer);
+    console.log(normalized);
 
     return asyncTrain(normalized, {
       iterations: 2000,
@@ -75,75 +70,33 @@ class App extends Component {
       callback: ({ error, iterations }) => this.setState({ error, iterations }),
       callbackPeriod: 75,
       timeout: Infinity
-    }).then(stats =>
-      this.setState({
-        brain: brain.toFunction(),
-        trained: true,
-        training: false,
-        ...stats
-      })
-    );
-  };
-
-  test = rgb => {
-    const { brain } = this.state;
-    const result = compose(amplify, brain, normal)(rgb);
-    this.setState({ textColor: result });
+    })
+      .then(stats =>
+        this.setState({
+          brain: brain.toFunction(),
+          trained: true,
+          training: false,
+          ...stats
+        })
+      )
+      .then(() => console.log(brain.toFunction().toString()));
   };
 
   render() {
-    const {
-      background,
-      textColor,
-      data,
-      base,
-      trained,
-      training,
-      error,
-      iterations
-    } = this.state;
-    const backgroundString = rgbaToString(background);
-    const textColorString = rgbaToString(textColor);
+    const { data, trained, training, error, color, iterations } = this.state;
+    console.log("state", color, data);
     return (
-      <Container background={backgroundString}>
-        <MainTitle textColor={textColorString} title="Color Picker" />
-        <Text
-          color={textColorString}
-          style={{ marginBottom: "35px", textAlign: "center" }}
-        >
-          <span>
-            Make 5 pairs <br />
-            <code>{`{background, textColor}`}</code>
-          </span>
-        </Text>
-        <Row direction="column">
+      <Container>
+        <MainTitle title="Color Picker" />
+        <Row>
           <CardColorPicker
             title="Background Color"
+            picker={rgbaToString(color)}
             handler={this.handleBackgroundChangeComplete}
-            textColor={textColorString}
-            picker={backgroundString}
             testMode={trained}
           />
-          {trained ? (
-            <Column style={{ height: "120px" }} />
-          ) : (
-            <CardColorPicker
-              title="Text Color"
-              handler={this.handleTextChangeComplete}
-              textColor={textColorString}
-              picker={textColorString}
-            />
-          )}
-          <CenterTile
-            title={trained ? "Change the background!" : "Choose colors"}
-            textColor={textColorString}
-            count={data.length}
-            base={base}
-            trained={trained}
-            handler={this.test}
-          />
         </Row>
-        <Row direction="column">
+        <Row>
           <Column>
             {trained ? null : data.length < 5 ? (
               <Button onClick={this.addToData}>Add</Button>
@@ -154,21 +107,17 @@ class App extends Component {
             <Button onClick={this.resetData}>Reset</Button>
           </Column>
         </Row>
-        <Row direction="column">
-          <Column
-            style={{
-              minHeight: "50px"
-            }}
-          >
+        <Row>
+          <Column>
             {training && <Spinner name="three-bounce" size={60} />}
           </Column>
         </Row>
-        <Row direction="column">
+        <Row>
           <Column>
-            <Text color={textColorString}>Progress: {iterations} / 2000</Text>
+            <Text>Progress: {iterations} / 2000</Text>
           </Column>
-          <Column style={{ marginTop: "20px", marginBottom: "120px" }}>
-            <Text color={textColorString}>Error: {error.toFixed(2)} %</Text>
+          <Column>
+            <Text>Error: {error.toFixed(2)} %</Text>
           </Column>
         </Row>
       </Container>

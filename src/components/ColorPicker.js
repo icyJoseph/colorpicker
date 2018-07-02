@@ -1,15 +1,8 @@
 import React from "react";
-import { GithubPicker } from "react-color";
+import { SketchPicker } from "react-color";
 
 export const ColorPicker = ({ handler, color, style }) => {
-  return (
-    <GithubPicker
-      triangle="hide"
-      width="400px"
-      color={color}
-      onChangeComplete={handler}
-    />
-  );
+  return <SketchPicker color={color} onChangeComplete={handler} />;
 };
 
 export default ColorPicker;

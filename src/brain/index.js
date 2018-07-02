@@ -9,7 +9,7 @@ export const Net = () => {
 };
 
 export const normalizer = ({ input, output }) => {
-  return { input: normal(input), output: normal(output) };
+  return { input, output: normal(output) };
 };
 
 export const normal = ({ r, g, b, a }) => {

@@ -1,16 +1,14 @@
 import React from "react";
 import { Row, Column, Text } from "../styled";
 
-export const CardColorPicker = ({ title, textColor, count, base, trained }) => (
+export const CardColorPicker = ({ title, textColor, count, base }) => (
   <Column>
-    <Row direction="column">
+    <Row>
       <Column>
-        <Text color={textColor} style={{ marginTop: "10px" }}>
-          {title}
-        </Text>
+        <Text color={textColor}>{title}</Text>
       </Column>
       <Column>
-        <Text color={textColor} style={{ marginTop: "10px" }}>
+        <Text color={textColor}>
           {count}/{base}
         </Text>
       </Column>
