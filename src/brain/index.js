@@ -9,8 +9,10 @@ export const Net = () => {
 };
 
 export const normalizer = ({ input, output }) => {
-  return { input, output: normal(output) };
+  return { input: normalTemp(input), output: normal(output) };
 };
+
+export const normalTemp = ({ temp }) => (temp + 50) / 100;
 
 export const normal = ({ r, g, b, a }) => {
   return { r: r / 255, g: g / 255, b: b / 255, a };

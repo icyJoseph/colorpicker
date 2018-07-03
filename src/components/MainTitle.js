@@ -1,14 +1,15 @@
-import React from "react";
-import { Row, Column, Title } from "../styled";
+import React, { Fragment } from "react";
+import { Row, Title, Heading } from "../styled";
 
-export const MainTitle = ({ textColor, title }) => (
-  <Row>
-    <Column>
-      <Title color={textColor} size={24}>
-        {title}
-      </Title>
-    </Column>
-  </Row>
+export const MainTitle = ({ title, subtitle }) => (
+  <Fragment>
+    <Row>
+      <Title size={24}>{title}</Title>
+    </Row>
+    <Heading>
+      <Heading>{subtitle}</Heading>
+    </Heading>
+  </Fragment>
 );
 
 export default MainTitle;

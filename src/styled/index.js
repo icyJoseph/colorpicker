@@ -6,27 +6,35 @@ export const Container = styled.div`
   flex-direction: column;
   width: 100%;
 `;
-export const Row = styled.div`
+export const Row = styled.div.attrs({
+  style: ({ style }) => ({ ...style })
+})`
   flex: 1;
   display: flex;
   flex-direction: column;
 `;
 
-export const Column = styled.div`
+export const Column = styled.div.attrs({
+  style: ({ style }) => ({ ...style })
+})`
   display: flex;
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
 
-export const Title = styled.h1`
+export const Title = styled.h1.attrs({
+  style: ({ color }) => ({ color })
+})`
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-export const Heading = styled.div`
+export const Heading = styled.div.attrs({
+  style: ({ color }) => ({ color })
+})`
   flex: 1;
   display: flex;
   justify-content: center;
