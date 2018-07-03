@@ -19,7 +19,14 @@ export const Column = styled.div`
   align-items: center;
 `;
 
-export const Title = styled.span`
+export const Title = styled.h1`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Heading = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;

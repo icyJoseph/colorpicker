@@ -1,14 +1,14 @@
 import React from "react";
 import ColorPicker from "./ColorPicker";
-import { Row, Column, Title } from "../styled";
+import { Row, Column, Heading } from "../styled";
 
 export const CardColorPicker = ({ title, textColor, picker, handler }) => (
   <Column>
     <Row>
       <Column>
-        <Title color={textColor} size={16}>
+        <Heading color={textColor} size={16}>
           {title}
-        </Title>
+        </Heading>
       </Column>
       <Column>
         <ColorPicker color={picker} handler={handler} />

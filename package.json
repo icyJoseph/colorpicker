@@ -5,6 +5,7 @@
   "dependencies": {
     "@tensorflow/tfjs": "^0.10.3",
     "brain.js": "^1.2.0",
+    "rc-slider": "^8.6.1",
     "react": "^16.3.2",
     "react-color": "^2.14.1",
     "react-dom": "^16.3.2",

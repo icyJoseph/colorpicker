@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import Spinner from "react-spinkit";
 import CardColorPicker from "./components/CardColorPicker";
 import MainTitle from "./components/MainTitle";
+import RangeSlider from "./components/RangeSlider";
 import { Net, normalizer, rgbaToString } from "./brain";
 import { Button, Container, Column, Row, Text } from "./styled";
 
 class App extends Component {
   state = {
     data: [],
-    temp: 0,
+    temp: -50,
     color: { r: 0, g: 0, b: 0, a: 0 },
     base: 5,
     brain: null,
@@ -18,25 +19,23 @@ class App extends Component {
     iterations: 0
   };
 
-  handleBackgroundChangeComplete = color => {
-    console.log("handler", color);
-    return this.setState({ color: color.rgb });
-  };
+  colorPickerChange = color => this.setState({ color: color.rgb });
 
-  addToData = () => {
+  sliderChange = temp => this.setState({ temp });
+
+  addToData = () =>
     this.setState(prevState => {
       const { temp, color, data, base } = prevState;
       console.log(color);
       return {
         data: data.concat({
-          input: { temp },
+          input: { temp: (temp + 50) / 100 },
           output: color
         }),
         base: data.length >= base ? data.length + 1 : base,
         temp: temp + 0.2
       };
     });
-  };
 
   resetData = () => {
     this.setState({
@@ -56,9 +55,7 @@ class App extends Component {
     this.setState({ training: true, trained: false });
     const { brain, asyncTrain } = Net();
     const { data } = this.state;
-    console.log("data", data);
     const normalized = data.map(normalizer);
-    console.log(normalized);
 
     return asyncTrain(normalized, {
       iterations: 2000,
@@ -83,17 +80,35 @@ class App extends Component {
   };
 
   render() {
-    const { data, trained, training, error, color, iterations } = this.state;
-    console.log("state", color, data);
+    const {
+      data,
+      trained,
+      training,
+      error,
+      color,
+      iterations,
+      temp
+    } = this.state;
+
     return (
       <Container>
-        <MainTitle title="Color Picker" />
+        <MainTitle title="Temperature to Color" />
         <Row>
           <CardColorPicker
             title="Background Color"
             picker={rgbaToString(color)}
-            handler={this.handleBackgroundChangeComplete}
+            handler={this.colorPickerChange}
             testMode={trained}
+          />
+        </Row>
+        <Row>
+          <RangeSlider
+            key="slider"
+            min={-50}
+            max={50}
+            value={temp}
+            onChange={this.sliderChange}
+            style={{ marginTop: 50, height: 50 }}
           />
         </Row>
         <Row>
