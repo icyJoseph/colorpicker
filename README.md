@@ -4,7 +4,7 @@
 
 This project uses [Brain.js](https://github.com/BrainJS/brain.js/tree/develop/src).
 
-The user can select `{temperature, color}` pairs and to be used to train a Neural Network.
+The user can select `{temperature, color}` pairs which are used to train a Neural Network.
 
 The temperature ranges from -50 degrees celsius to 50 degrees celsius.
 
