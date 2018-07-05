@@ -1,11 +1,13 @@
 import React from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import { Row } from "../styled";
+import { Column, Row } from "../styled";
 
 export const RangeSlider = ({ ...props }) => (
-  <Row style={{ marginTop: 10, height: 25 }}>
-    <Slider {...props} />
+  <Row style={{ height: 25 }}>
+    <Column style={{ width: 300, margin: "auto" }}>
+      <Slider {...props} />
+    </Column>
   </Row>
 );
 

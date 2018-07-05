@@ -10,3 +10,9 @@ export const capitalize = string =>
 export const curry = f => (...a) => (...b) => f(...a, ...b);
 
 export const curryRight = f => (...b) => (...a) => f(...a, ...b);
+
+export const replaceAll = (str, find, replace) => {
+  return str.replace(new RegExp(find, "g"), replace);
+};
+
+export const replace = (str, find, replace) => str.replace(find, replace);

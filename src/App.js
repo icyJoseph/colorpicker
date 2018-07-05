@@ -2,38 +2,17 @@ import React, { Component } from "react";
 
 import ButtonPad from "./components/ButtonPad";
 import CardColorPicker from "./components/CardColorPicker";
+import Data from "./components/Data";
 import MainTitle from "./components/MainTitle";
 import Measure from "./components/Measure";
+import PrintFn from "./components/PrintFn";
 import RangeSlider from "./components/RangeSlider";
 
-import { Net, normalizer, rgbaToString, amplify, printFunction } from "./brain";
-
-import { Row, Container } from "./styled";
+import Net from "./brain";
+import { Container } from "./styled";
+import { normalizer, rgbaToString, amplify } from "./helpers";
 import { pipe } from "./functional";
-
-const initialState = {
-  data: [],
-  temp: -50,
-  color: { r: 64, g: 124, b: 191, a: 1 },
-  base: 5,
-  brain: null,
-  training: false,
-  trained: false,
-  error: 0,
-  iterations: 0,
-  fn: ""
-};
-
-const options = {
-  iterations: 2000,
-  errorThresh: 0.005,
-  log: false,
-  logPeriod: 10,
-  learningRate: 0.3,
-  momentum: 0.1,
-  callbackPeriod: 75,
-  timeout: Infinity
-};
+import { initialState, options } from "./constants";
 
 class App extends Component {
   state = {
@@ -72,29 +51,28 @@ class App extends Component {
         output: color
       }),
       base: data.length >= base ? data.length + 1 : base,
-      temp: temp + 20
+      temp: temp + 20 > 50 ? 50 : temp + 20
     }));
 
   train = () => {
+    const { data } = this.state;
+    if (data.length < 5) return null;
     this.setState({ training: true, trained: false });
     const { brain, asyncTrain } = Net();
-    const { data } = this.state;
     const normalized = data.map(normalizer);
 
     return asyncTrain(normalized, {
       ...options,
       callback: ({ error, iterations }) => this.setState({ error, iterations })
-    })
-      .then(stats =>
-        this.setState({
-          brain: brain.toFunction(),
-          fn: brain.toFunction().toString(),
-          trained: true,
-          training: false,
-          ...stats
-        })
-      )
-      .then(() => console.log(brain.toFunction().toString()));
+    }).then(stats =>
+      this.setState({
+        brain: brain.toFunction(),
+        fn: brain.toFunction().toString(),
+        trained: true,
+        training: false,
+        ...stats
+      })
+    );
   };
 
   render() {
@@ -144,42 +122,11 @@ class App extends Component {
           trainHandler={this.train}
           resetHandler={this.resetData}
         />
-        {!trained && (
-          <Measure measure="data" value={`${data.length}/${base}`} />
-        )}
-        {data.map(({ input, output }, index) => (
-          <div
-            key={`${index}-${input.temp}`}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: 10
-            }}
-          >
-            <code>
-              Data[{index}]: {`${"{"}`} temperature:{input.temp}, color:{" "}
-            </code>
-            <div
-              style={{
-                borderRadius: "50%",
-                height: 16,
-                width: 16,
-                background: rgbaToString(output)
-              }}
-            />
-            <code>{`${"}"}`}</code>
-          </div>
-        ))}
-        <Row style={{ width: 300, margin: 10 }}>
-          {fn && (
-            <div>
-              <div>Your function is:</div>
-              <div>
-                <code>{printFunction(fn)}</code>
-              </div>
-            </div>
-          )}
-        </Row>
+        <div style={{ marginTop: 30 }}>
+          <Measure measure="samples" value={`${data.length}/${base}`} />
+          <Data data={data} />
+          <PrintFn fn={fn} />
+        </div>
       </Container>
     );
   }

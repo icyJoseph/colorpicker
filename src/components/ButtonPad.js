@@ -1,21 +1,13 @@
 import React from "react";
 import { Button, Column, Row } from "../styled";
 
-export const ButtonPad = ({
-  data,
-  trained,
-  training,
-  addDataHandler,
-  trainHandler,
-  resetHandler
-}) => (
+export const ButtonPad = ({ addDataHandler, trainHandler, resetHandler }) => (
   <Row>
     <Column>
-      {trained ? null : data.length < 5 ? (
-        <Button onClick={addDataHandler}>Add</Button>
-      ) : (
-        !training && <Button onClick={trainHandler}>Train</Button>
-      )}
+      <Button onClick={trainHandler}>Train</Button>
+    </Column>
+    <Column>
+      <Button onClick={addDataHandler}>Add</Button>
       <Button onClick={resetHandler}>Reset</Button>
     </Column>
   </Row>

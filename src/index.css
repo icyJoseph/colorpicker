@@ -1,11 +1,18 @@
 html {
   height: 100%;
+  width: 100%;
 }
 body {
+  overflow-y: scroll;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  box-sizing: content-box;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }

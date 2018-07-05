@@ -4,8 +4,8 @@ export const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  width: 100%;
 `;
+
 export const Row = styled.div.attrs({
   style: ({ style }) => ({ ...style })
 })`
@@ -58,4 +58,6 @@ export const Button = styled.button`
   padding: 0.25em 1em;
   border: 2px solid palevioletred;
   border-radius: 3px;
+  background: palevioletred;
+  color: white;
 `;
