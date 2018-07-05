@@ -31,14 +31,14 @@ class App extends Component {
     this.setState(prevState => {
       return {
         ...prevState,
+        temp,
         color: prevState.trained
           ? pipe(
               ({ temp }) => ({ temp: (temp + 50) / 100 }),
               prevState.brain,
               amplify
             )({ temp })
-          : prevState.color,
-        temp
+          : prevState.color
       };
     });
 
@@ -98,6 +98,7 @@ class App extends Component {
         <CardColorPicker
           title="Select a temperature color"
           picker={rgbaToString(color)}
+          rgb={color}
           handler={this.colorPickerChange}
           alpha={this.alphaPickerChange}
           trained={trained}

@@ -51,6 +51,13 @@ export const Text = styled.span`
   font-weight: 400;
 `;
 
+export const RGBColor = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;
+
 export const Button = styled.button`
   font-size: 1em;
   width: 75px;
@@ -68,4 +75,7 @@ export const ColorPad = styled.div.attrs({
   height: 150px;
   width: 150px;
   border-radius: 50%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
 `;

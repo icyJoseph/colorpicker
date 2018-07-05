@@ -33,5 +33,7 @@ export const printFunction = pipe(
   curryRight(replace)(anon, name),
   curryRight(replaceAll)(inputTemp, formula),
   curryRight(replace)(input, temp),
-  curryRight(replaceAll)(scale, realScale)
+  curryRight(replace)(scale, realScale), // for r
+  curryRight(replace)(scale, realScale), // for g
+  curryRight(replace)(scale, realScale) // for b, and not for a
 );
