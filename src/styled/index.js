@@ -30,6 +30,7 @@ export const Title = styled.h1.attrs({
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: 400;
 `;
 
 export const Heading = styled.div.attrs({
@@ -46,7 +47,8 @@ export const Text = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 20pt;
+  font-size: 14pt;
+  font-weight: 400;
 `;
 
 export const Button = styled.button`

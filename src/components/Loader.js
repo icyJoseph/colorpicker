@@ -4,8 +4,8 @@ import { Row, Column } from "../styled";
 
 export const Loader = () => (
   <Row>
-    <Column>
-      <Spinner name="three-bounce" size={60} />}
+    <Column style={{ height: "150px" }}>
+      <Spinner name="three-bounce" size={60} />
     </Column>
   </Row>
 );

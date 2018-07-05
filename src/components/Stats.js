@@ -1,13 +1,14 @@
 import React from "react";
-import { Column, Row, Text } from "../styled";
+import { Column, Row } from "../styled";
+import Measure from "./Measure";
 
-export const Stats = ({ iterations, error }) => (
-  <Row>
+export const Stats = ({ iterations, totalIterations, error }) => (
+  <Row style={{ height: "100px" }}>
     <Column>
-      <Text>Progress: {iterations} / 2000</Text>
+      <Measure measure="progress" value={`${iterations}/${totalIterations}`} />
     </Column>
     <Column>
-      <Text>Error: {error.toFixed(2)} %</Text>
+      <Measure measure="error" value={`${error.toFixed(2)}`} unit="%" />
     </Column>
   </Row>
 );

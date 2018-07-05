@@ -6,3 +6,7 @@ export const pipe = (...functions) => data =>
 
 export const capitalize = string =>
   string.charAt(0).toUpperCase() + string.slice(1);
+
+export const curry = f => (...a) => (...b) => f(...a, ...b);
+
+export const curryRight = f => (...b) => (...a) => f(...a, ...b);

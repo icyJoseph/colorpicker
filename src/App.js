@@ -4,25 +4,35 @@ import ButtonPad from "./components/ButtonPad";
 import CardColorPicker from "./components/CardColorPicker";
 import MainTitle from "./components/MainTitle";
 import Measure from "./components/Measure";
-
-import Loader from "./components/Loader";
 import RangeSlider from "./components/RangeSlider";
-import Stats from "./components/Stats";
 
-import { Net, normalizer, rgbaToString } from "./brain";
+import { Net, normalizer, rgbaToString, amplify, printFunction } from "./brain";
 
-import { Container } from "./styled";
+import { Row, Container } from "./styled";
+import { pipe } from "./functional";
 
 const initialState = {
   data: [],
   temp: -50,
-  color: { r: 0, g: 0, b: 0, a: 1 },
+  color: { r: 64, g: 124, b: 191, a: 1 },
   base: 5,
   brain: null,
   training: false,
   trained: false,
   error: 0,
-  iterations: 0
+  iterations: 0,
+  fn: ""
+};
+
+const options = {
+  iterations: 2000,
+  errorThresh: 0.005,
+  log: false,
+  logPeriod: 10,
+  learningRate: 0.3,
+  momentum: 0.1,
+  callbackPeriod: 75,
+  timeout: Infinity
 };
 
 class App extends Component {
@@ -30,23 +40,40 @@ class App extends Component {
     ...initialState
   };
 
-  colorPickerChange = ({ rgb }) => this.setState({ color: rgb });
+  colorPickerChange = ({ rgb: { r, g, b } }) =>
+    this.setState(({ color }) => ({
+      color: { ...color, r, g, b }
+    }));
 
-  sliderChange = temp => this.setState({ temp });
+  alphaPickerChange = ({ rgb: { a } }) =>
+    this.setState(({ color }) => ({ color: { ...color, a } }));
+
+  sliderChange = temp =>
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        color: prevState.trained
+          ? pipe(
+              ({ temp }) => ({ temp: (temp + 50) / 100 }),
+              prevState.brain,
+              amplify
+            )({ temp })
+          : prevState.color,
+        temp
+      };
+    });
 
   resetData = () => this.setState({ ...initialState });
 
   addToData = () =>
-    this.setState(prevState => {
-      const { temp, color, data, base } = prevState;
-      return {
-        data: data.concat({
-          input: { temp },
-          output: color
-        }),
-        base: data.length >= base ? data.length + 1 : base
-      };
-    });
+    this.setState(({ temp, color, data, base }) => ({
+      data: data.concat({
+        input: { temp },
+        output: color
+      }),
+      base: data.length >= base ? data.length + 1 : base,
+      temp: temp + 20
+    }));
 
   train = () => {
     this.setState({ training: true, trained: false });
@@ -55,19 +82,13 @@ class App extends Component {
     const normalized = data.map(normalizer);
 
     return asyncTrain(normalized, {
-      iterations: 2000,
-      errorThresh: 0.005,
-      log: false,
-      logPeriod: 10,
-      learningRate: 0.3,
-      momentum: 0.1,
-      callback: ({ error, iterations }) => this.setState({ error, iterations }),
-      callbackPeriod: 75,
-      timeout: Infinity
+      ...options,
+      callback: ({ error, iterations }) => this.setState({ error, iterations })
     })
       .then(stats =>
         this.setState({
           brain: brain.toFunction(),
+          fn: brain.toFunction().toString(),
           trained: true,
           training: false,
           ...stats
@@ -78,27 +99,34 @@ class App extends Component {
 
   render() {
     const {
+      base,
       data,
       trained,
       training,
       error,
       color,
       iterations,
-      temp
+      temp,
+      fn
     } = this.state;
 
     return (
       <Container>
         <MainTitle
           color={"black"}
-          title="Temperature to Color"
+          title="Map Temperature to Color"
           subtitle="with Machine Learning"
         />
         <CardColorPicker
           title="Select a temperature color"
           picker={rgbaToString(color)}
           handler={this.colorPickerChange}
-          testMode={trained}
+          alpha={this.alphaPickerChange}
+          trained={trained}
+          training={training}
+          iterations={iterations}
+          totalIterations={options.iterations}
+          error={error}
         />
         <Measure measure="temperature" value={temp} unit="&deg;C" />
         <RangeSlider
@@ -116,8 +144,42 @@ class App extends Component {
           trainHandler={this.train}
           resetHandler={this.resetData}
         />
-        {training && <Loader />}
-        <Stats iterations={iterations} error={error} />
+        {!trained && (
+          <Measure measure="data" value={`${data.length}/${base}`} />
+        )}
+        {data.map(({ input, output }, index) => (
+          <div
+            key={`${index}-${input.temp}`}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: 10
+            }}
+          >
+            <code>
+              Data[{index}]: {`${"{"}`} temperature:{input.temp}, color:{" "}
+            </code>
+            <div
+              style={{
+                borderRadius: "50%",
+                height: 16,
+                width: 16,
+                background: rgbaToString(output)
+              }}
+            />
+            <code>{`${"}"}`}</code>
+          </div>
+        ))}
+        <Row style={{ width: 300, margin: 10 }}>
+          {fn && (
+            <div>
+              <div>Your function is:</div>
+              <div>
+                <code>{printFunction(fn)}</code>
+              </div>
+            </div>
+          )}
+        </Row>
       </Container>
     );
   }
