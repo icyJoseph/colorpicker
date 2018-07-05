@@ -61,3 +61,11 @@ export const Button = styled.button`
   background: palevioletred;
   color: white;
 `;
+
+export const ColorPad = styled.div.attrs({
+  style: ({ background }) => ({ background })
+})`
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+`;

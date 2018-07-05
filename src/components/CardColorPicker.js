@@ -2,7 +2,7 @@ import React from "react";
 import ColorPicker from "./ColorPicker";
 import Loader from "./Loader";
 import Stats from "./Stats";
-import { Row, Column, Heading } from "../styled";
+import { Row, Column, Heading, ColorPad } from "../styled";
 
 export const CardColorPicker = ({
   title,
@@ -20,20 +20,7 @@ export const CardColorPicker = ({
       <Heading size={16}>{title}</Heading>
     </Column>
     <Column style={{ marginBottom: 10 }}>
-      {training ? (
-        <Row>
-          <Loader />
-        </Row>
-      ) : (
-        <div
-          style={{
-            height: "150px",
-            width: "150px",
-            background: picker,
-            borderRadius: "50%"
-          }}
-        />
-      )}
+      {training ? <Loader /> : <ColorPad background={picker} />}
     </Column>
     {!training && !trained ? (
       <ColorPicker color={picker} handler={handler} alpha={alpha} />
