@@ -12,4 +12,4 @@ Once the training is done the user can select different temperatures and see whi
 
 The user can also see and copy the function built by the Neural Network. This function is already scaled and ready to take temperatures from -50 degrees celsius to 50 degrees celsius.
 
-Demo available at: [Color Picker](https://nauseating-party.surge.sh/)
+Demo available at: [Map Temperature to Color](https://nauseating-party.surge.sh/)
