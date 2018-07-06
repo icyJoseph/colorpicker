@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Color2Temp",
+  "name": "Map Color2Temp with ML",
   "icons": [
     {
       "src": "favicon.ico",
