@@ -1,7 +1,7 @@
 {
   "name": "browser_ml",
   "version": "0.1.0",
-  "homepage": "https://icyJoseph.github.io/colorPicker",
+  "homepage": "https://icyJoseph.github.io/colorpicker",
   "private": true,
   "dependencies": {
     "brain.js": "^1.2.0",
