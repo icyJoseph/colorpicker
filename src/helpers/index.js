@@ -26,7 +26,9 @@ export const amplify = ({ r, g, b, a }) => {
 };
 
 export const rgbaToString = ({ r, g, b, a }) => {
-  return `rgba(${r}, ${g}, ${b}, ${a})`;
+  return `rgba(${r.toFixed(0)}, ${g.toFixed(0)}, ${b.toFixed(0)}, ${a.toFixed(
+    2
+  )})`;
 };
 
 export const printFunction = pipe(
