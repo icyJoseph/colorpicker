@@ -15,4 +15,3 @@ The user can also see and copy the function built by the Neural Network. This fu
 Demo available at:
 
 - [Map Temperature to Color](https://nauseating-party.surge.sh/)
-- or [as a github page](https://icyjoseph.github.io/colorpicker/)
